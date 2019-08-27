@@ -4,6 +4,9 @@ var saldoCuenta = 6000;
 var limiteExtraccion = 4000;
 var cantidadDinero;
 var peticiones;
+var codigo = 1234;
+var pedircodigo = parseInt(prompt("Ingresar contraseña"));
+var value;
 
 //Variables servicios
 var agua = 350;
@@ -17,10 +20,12 @@ var cuentaAmiga2 = 7654321;
 
 
 //Ejecución de las funciones que actualizan los valores de las variables en el HTML.
+iniciarSesion();
+
 window.onload = function() {
-    cargarNombreEnPantalla();
-    actualizarSaldoEnPantalla();
-    actualizarLimiteEnPantalla();
+        cargarNombreEnPantalla();
+        actualizarSaldoEnPantalla();
+        actualizarLimiteEnPantalla();
 }
 
 //validaciones
@@ -43,7 +48,7 @@ function avaliableBalance (){
 
 function validateLimit(){
     if(cantidadDinero > limiteExtraccion){
-        alert("¡No has podido extraer! \nLa cantiad de dinero que deseas extraer es mayor a tu limite de extracción \nTu limite actual es de $" + limiteExtraccion);
+        alert("¡No has podido extraer! \nLa cantiad de dinero es mayor a tu limite de extracción \nTu limite actual es de $" + limiteExtraccion);
         return false
     } return true;
 }
@@ -57,10 +62,17 @@ function validateMultiples(){
     }
 }
 
+function promptOrDefault(text){
+    value = parseInt(prompt(text))
+    if(isNaN(value)){
+        value = 0;
+    }return value
+}
+
 //Funciones que tenes que completar
 function cambiarLimiteDeExtraccion() {
-    peticiones = parseInt(prompt("¿Cuál es tu nuevo limite?"));
-    if (validateType()){
+    peticiones = promptOrDefault("¿Cuál es tu nuevo limite?");
+    if (validateType() && value !== 0){
         limiteExtraccion = peticiones;
         alert("Tu nuevo limite de extracción es de $" + limiteExtraccion);
         actualizarLimiteEnPantalla();
@@ -68,8 +80,8 @@ function cambiarLimiteDeExtraccion() {
 }
 
 function extraerDinero() {
-    peticiones = parseInt(prompt("¿Cuánto dinero quieres extraer?"));
-    if (validateType() && validateLimit() && avaliableBalance() && validateMultiples()){
+    peticiones = promptOrDefault("¿Cuánto dinero quieres extraer?");
+    if (validateType() && validateLimit() && avaliableBalance() && validateMultiples() && value !== 0){
         var saldoAnterior = saldoCuenta;
         saldoCuenta -= cantidadDinero;
         alert("Has retirado: " + cantidadDinero + "\n" + "Saldo anterior: " + saldoAnterior + "\n" + "Saldo actual: " + saldoCuenta)
@@ -78,8 +90,8 @@ function extraerDinero() {
 }
 
 function depositarDinero() {
-    peticiones = parseInt(prompt("¿Cuánto dinero quieres depositar?"));
-    if (validateType()){
+    peticiones = promptOrDefault("¿Cuánto dinero quieres depositar?");
+    if (validateType() && value !== 0){
         var saldoAnterior = saldoCuenta;
         saldoCuenta += cantidadDinero;
         alert("Has depositado: " + cantidadDinero + "\n" + "Saldo anterior: " + saldoAnterior + "\n" + "Saldo actual: " + saldoCuenta)
@@ -88,13 +100,13 @@ function depositarDinero() {
 }
 
 function pagarServicio() {
-    peticiones = parseInt(prompt("Ingrese el número que corresponda con el servicio que quieres pagar \n1 - Agua \n2 - Luz \n3 - Internet \n4 - Teléfono"));
-    if(validateType()){
+    peticiones = promptOrDefault("Ingrese el número que corresponda con el servicio que quieres pagar \n1 - Agua \n2 - Luz \n3 - Internet \n4 - Teléfono");
+    if(validateType() && value !== 0){
+        var saldoAnterior = saldoCuenta;
         switch(peticiones){
             case 1 :
                 cantidadDinero = agua;    
                 if(avaliableBalance()){
-                    var saldoAnterior = saldoCuenta;
                     saldoCuenta -= agua;
                     alert("Has pagado el servicio del agua\nDinero descontado: " + agua + "\n" + "Saldo anterior: " + saldoAnterior + "\n" + "Saldo actual: " + saldoCuenta)
                     actualizarSaldoEnPantalla();  
@@ -103,7 +115,6 @@ function pagarServicio() {
             case 2 :
                 cantidadDinero = luz;    
                 if(avaliableBalance()){
-                    var saldoAnterior = saldoCuenta;
                     saldoCuenta -= luz;
                     alert("Has pagado el servicio del la luz\nDinero descontado: " + luz + "\n" + "Saldo anterior: " + saldoAnterior + "\n" + "Saldo actual: " + saldoCuenta)
                     actualizarSaldoEnPantalla();  
@@ -112,7 +123,6 @@ function pagarServicio() {
             case 3 :
                 cantidadDinero = internet;    
                 if(avaliableBalance()){
-                    var saldoAnterior = saldoCuenta;
                     saldoCuenta -= internet;
                     alert("Has pagado el servicio del internet\nDinero descontado: " + internet + "\n" + "Saldo anterior: " + saldoAnterior + "\n" + "Saldo actual: " + saldoCuenta)
                     actualizarSaldoEnPantalla();  
@@ -121,7 +131,6 @@ function pagarServicio() {
             case 4 :
                 cantidadDinero = telefono;    
                 if(avaliableBalance()){
-                    var saldoAnterior = saldoCuenta;
                     saldoCuenta -= telefono;
                     alert("Has pagado el servicio del teléfono\nDinero descontado: " + telefono + "\n" + "Saldo anterior: " + saldoAnterior + "\n" + "Saldo actual: " + saldoCuenta)
                     actualizarSaldoEnPantalla();  
@@ -134,8 +143,8 @@ function pagarServicio() {
 }
 
 function transferirDinero() {
-    peticiones = parseInt(prompt("Ingresa el monto que deseas transferir"));
-    if(validateType() && avaliableBalance()){
+    peticiones = promptOrDefault("Ingresa el monto que deseas transferir");
+    if(validateType() && avaliableBalance() && value !== 0){
         var accountNumber = parseInt(prompt("Ingresa el número de la cuenta amiga"));
         if(accountNumber == cuentaAmiga1){
             saldoCuenta -= peticiones;
@@ -152,7 +161,14 @@ function transferirDinero() {
 }
 
 function iniciarSesion() {
-
+    if (pedircodigo == codigo){
+        alert("Bienvenido/a " + nombreUsuario + " ya puedes comenzar a realizar operaciones");
+        return true;
+    }else{
+        saldoCuenta = 0;
+        nombreUsuario = "usuario";
+        alert("Código incorrecto. Tu dinero ha sido retenido por cuestiones de seguridad");
+    }
 }
 
 //Funciones que actualizan el valor de las variables en el HTML
