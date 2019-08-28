@@ -34,9 +34,22 @@ function validateType(){
         cantidadDinero = peticiones;
         return true;
     }else{
-        alert("¡Este valor no es valido! \nDebes ingresar un número");
+        invalidNumberMessage();
         return false;
     }
+}
+
+function invalidNumberMessage(){
+    alert("¡Este valor no es valido! \nDebes ingresar un número");
+}
+
+function promptOrDefault(text){
+    value = prompt(text);
+    if(value != "" && value != null){
+        value = parseInt(value);
+    }else{
+        value = 0;
+    }return value
 }
 
 function avaliableBalance (){
@@ -62,12 +75,7 @@ function validateMultiples(){
     }
 }
 
-function promptOrDefault(text){
-    value = parseInt(prompt(text))
-    if(isNaN(value)){
-        value = 0;
-    }return value
-}
+
 
 //Funciones que tenes que completar
 function cambiarLimiteDeExtraccion() {
